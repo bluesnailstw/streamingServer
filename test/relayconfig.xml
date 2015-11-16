@@ -1,0 +1,24 @@
+<!-- This is a sample relay config file.  -->
+<!-- *** Need to add a valid dtd here. *** -->
+<RELAY_CONFIG>
+
+	<!-- RELAY-CONFIG should contain one or more objects of type relay -->
+	<OBJECT TYPE="relay">
+
+		<!-- if enabled is set to false, the server will ignore this relay -->
+		<!-- (optional, defaults to true) -->
+		<PREF NAME="enabled">true</PREF>
+
+		<!-- Each relay object contains one source object and multiple destination objects -->
+
+		<!-- an rtsp_source is used to request a stream from a server -->
+
+		<OBJECT CLASS="source" TYPE="announced_source">
+		
+		</OBJECT>
+
+	</OBJECT>
+
+</RELAY_CONFIG>
+
+

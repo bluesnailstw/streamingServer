@@ -1,0 +1,45 @@
+#!/bin/sh
+#
+# chkconfig: 345 85 15
+# description: Darwin Streaming Server Proxy
+# processname: StreamingProxy
+# probe: false
+# config: /etc/dss/streamingproxy.conf
+
+# Source function library.
+
+. /etc/rc.d/init.d/functions
+
+# See how we were called.
+case "$1" in
+  start)
+	gprintf "Starting Darwin Streaming Server Proxy: "
+	daemon StreamingProxy
+	echo
+	touch /var/lock/subsys/StreamingProxy
+	;;
+  stop)
+	gprintf "Shutting down Darwin Streaming Server Proxy: "
+	killproc StreamingProxy
+	echo
+	rm -f /var/lock/subsys/StreamingProxy
+	rm -f /var/run/StreamingProxy.pid
+	;;
+  restart)
+	$0 stop
+	$0 start
+	;;
+  status)
+  	status StreamingProxy
+	;;
+  reload)
+	gprintf "Reloading Darwin Streaming Server Proxy: "
+	killproc StreamingProxy -HUP
+	echo
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart|status|reload}"
+	exit 1
+esac
+
+exit 0

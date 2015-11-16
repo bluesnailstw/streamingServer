@@ -1,0 +1,63 @@
+#!/bin/sh
+#
+# chkconfig: - 91 35
+# description: Darwin Streaming Server
+# processname: DarwinStreamingServer
+# probe: false
+# pidfile: /var/lock/subsys/DarwinStreamingServer
+# pidfile: /var/lock/subsys/streamingadminserver.pl
+# config: /etc/dss/qtgroups
+# config: /etc/dss/qtusers
+# config: /etc/dss/relayconfig.xml
+# config: /etc/dss/streamingserver.xml
+
+# Source function library.
+
+. /etc/rc.d/init.d/functions
+
+# See how we were called.
+case "$1" in
+  start)
+    echo -n "Starting Darwin Streaming Server: "
+    daemon DarwinStreamingServer
+    echo
+    touch /var/lock/subsys/DarwinStreamingServer
+
+    echo -n "Starting Darwin Streaming Admin Server: "
+    daemon streamingadminserver.pl
+    echo
+    touch /var/lock/subsys/streamingadminserver.pl
+  ;;
+  stop)
+    echo -n "Shutting down Darwin Streaming Server: "
+    killproc DarwinStreamingServer
+    echo
+    rm -f /var/lock/subsys/DarwinStreamingServer
+    rm -f /var/run/DarwinStreamingServer.pid
+
+    echo -n "Shutting down Darwin Streaming Admin Server: "
+    killproc streamingadminserver
+    echo
+    rm -f /var/lock/subsys/streamingadminserver.pl
+    rm -f /var/run/streamingadminserver.pid
+  ;;
+  restart)
+    $0 stop
+    $0 start
+  ;;
+  status)
+    status DarwinStreamingServer
+  ;;
+  reload)
+    echo -n "Reloading Darwin Streaming Server: "
+    killproc DarwinStreamingServer -HUP
+    echo
+  ;;
+  *)
+    echo "Usage: %s {start|stop|restart|status|reload}\n" "$0"
+    exit 1
+esac
+
+exit 0
+
+# end /etc/rc.d/init.d/dss
